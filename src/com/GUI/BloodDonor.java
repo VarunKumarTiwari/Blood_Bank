@@ -1,9 +1,11 @@
 package com.GUI;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +15,7 @@ import javax.swing.table.TableModel;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -22,8 +25,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import java.awt.Font;
 
 public class BloodDonor {
 
@@ -33,6 +39,7 @@ public class BloodDonor {
 	private JTextField age;
 	private JTable table;
 	private TableFillData tfd = new TableFillData();
+	private int id_;
 
 	/**
 	 * Launch the application.
@@ -44,52 +51,84 @@ public class BloodDonor {
 	 */
 	public BloodDonor() {
 		initialize();
+		Connection conn = DBConnection.initiate_db_conn();
+		try {			
+		Statement stmt11=conn.createStatement();
+		ResultSet rs=stmt11.executeQuery("select * from donor"); 
+		
+		while(rs.next()) {  
+			 id_ = rs.getInt(1);
+		}
+		int r =id_+1;
+
+		
+	} catch (SQLException e1) {
+		e1.printStackTrace();
+	}
+
+			
+	
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 655, 319);
+		frame = new JFrame("Donor Detail Form");
+		frame.setBounds(100, 100, 796, 444);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblDonorName = new JLabel("Donor No.");
-		lblDonorName.setBounds(23, 35, 86, 14);
+		lblDonorName.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDonorName.setBounds(23, 179, 86, 14);
 		frame.getContentPane().add(lblDonorName);
 		
+		JLabel label_1 = new JLabel("Blood Donation");
+		label_1.setForeground(new Color(107, 142, 35));
+		label_1.setFont(new Font("Nirmala UI", Font.BOLD, 21));
+		label_1.setBounds(149, 39, 167, 37);
+		frame.getContentPane().add(label_1);
+			
 		JLabel lblDonorName_1 = new JLabel("Donor Name");
-		lblDonorName_1.setBounds(23, 77, 86, 14);
+		lblDonorName_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDonorName_1.setBounds(23, 216, 86, 14);
 		frame.getContentPane().add(lblDonorName_1);
 		
 		JLabel lblBloodGroup = new JLabel("Blood Group");
-		lblBloodGroup.setBounds(23, 119, 86, 14);
+		lblBloodGroup.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblBloodGroup.setBounds(23, 250, 86, 14);
 		frame.getContentPane().add(lblBloodGroup);
 		
 		JLabel lblSex = new JLabel("Gender");
-		lblSex.setBounds(23, 158, 86, 14);
+		lblSex.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblSex.setBounds(23, 285, 86, 14);
 		frame.getContentPane().add(lblSex);
 		
 		JComboBox bgroup = new JComboBox();
+		bgroup.setFont(new Font("Tahoma", Font.BOLD, 11));
 		bgroup.setModel(new DefaultComboBoxModel(new String[] {"Select Blood Group", "O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"}));
-		bgroup.setBounds(109, 115, 116, 22);
+		bgroup.setBounds(135, 246, 132, 22);
 		frame.getContentPane().add(bgroup);
 		
 		JComboBox gender = new JComboBox();
+		gender.setFont(new Font("Tahoma", Font.BOLD, 11));
 		gender.setModel(new DefaultComboBoxModel(new String[] {"Select Gender", "Male", "Female", "Rather Not Say"}));
-		gender.setBounds(109, 154, 116, 22);
+		gender.setBounds(135, 281, 132, 22);
 		frame.getContentPane().add(gender);
 		
 		JLabel lblAge = new JLabel("Age");
-		lblAge.setBounds(23, 194, 86, 14);
+		lblAge.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblAge.setBounds(23, 320, 86, 14);
 		frame.getContentPane().add(lblAge);
 		
 		JLabel lblDate = new JLabel("Date");
-		lblDate.setBounds(23, 11, 46, 14);
+		lblDate.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDate.setBounds(21, 140, 46, 14);
 		frame.getContentPane().add(lblDate);
 		
 		JButton btnAdd = new JButton("ADD");
+		btnAdd.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -106,11 +145,11 @@ public class BloodDonor {
 							pstmt.setInt(5, Integer.parseInt(age.getText()));
 							pstmt.executeUpdate();
 							pstmt.close();
-							System.out.println("success");
+							JOptionPane.showMessageDialog(null,"Data Insert");
 						}
 				catch (SQLException sqle)
 				{
-					System.err.println("Error with  insert:\n"+sqle.toString());
+					JOptionPane.showMessageDialog(null,"Error with Insert:"+sqle.toString());
 				}
 				finally
 				{
@@ -118,11 +157,11 @@ public class BloodDonor {
 				}
 			}
 		});
-		btnAdd.setBounds(10, 227, 89, 23);
+		btnAdd.setBounds(23, 371, 89, 23);
 		frame.getContentPane().add(btnAdd);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(248, 36, 370, 171);
+		scrollPane.setBounds(326, 21, 442, 307);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -132,10 +171,11 @@ public class BloodDonor {
 		
 		
 		JButton btnUpdate = new JButton("UPDATE");
+		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Connection con = DBConnection.initiate_db_conn();
-				String insertQuery ="UPDATE donor SET fName = ? , bgroup = ?, gender = ?, age = ? where id = ?";
+				String insertQuery ="UPDATE donor SET fName = ?, bgroup =?, gender =?, age =? where id = ?";
 
 				
 						try {
@@ -147,11 +187,11 @@ public class BloodDonor {
 							pstmt.setInt(5, Integer.parseInt(no.getText()));
 							pstmt.executeUpdate();
 							pstmt.close();
-							System.out.println("success");
+							JOptionPane.showMessageDialog(null,"Data Update");
 						}
 				catch (SQLException sqle)
 				{
-					System.err.println("Error with  insert:\n"+sqle.toString());
+					JOptionPane.showMessageDialog(null,"Error with Updates:"+sqle.toString());
 				}
 				finally
 				{
@@ -161,10 +201,11 @@ public class BloodDonor {
 				
 			}
 		});
-		btnUpdate.setBounds(109, 227, 89, 23);
+		btnUpdate.setBounds(149, 371, 89, 23);
 		frame.getContentPane().add(btnUpdate);
 		
 		JButton btnDelete = new JButton("DELETE");
+		btnDelete.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Connection con = DBConnection.initiate_db_conn();
@@ -176,11 +217,13 @@ public class BloodDonor {
 							pstmt.setInt(1, Integer.parseInt(no.getText()));
 							pstmt.executeUpdate();
 							pstmt.close();
-							System.out.println("success");
+							JOptionPane.showMessageDialog(null,"Data Deleted");
+							//System.out.println("success");
 						}
 				catch (SQLException sqle)
 				{
-					System.err.println("Error with  insert:\n"+sqle.toString());
+					JOptionPane.showMessageDialog(null,"Error with Delete:"+sqle.toString());
+					
 				}
 				finally
 				{
@@ -188,39 +231,36 @@ public class BloodDonor {
 				}
 			}
 		});
-		btnDelete.setBounds(208, 227, 89, 23);
+		btnDelete.setBounds(269, 371, 89, 23);
 		frame.getContentPane().add(btnDelete);
 		
-		JLabel lblDonorDetailForm = new JLabel("Donor Detail Form");
-		lblDonorDetailForm.setBounds(277, 11, 105, 14);
-		frame.getContentPane().add(lblDonorDetailForm);
 		
-		JLabel label = new JLabel("");
-		label.setBounds(114, 11, 111, 14);
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+		JLabel label = new JLabel(formatter.format(date));
+		label.setFont(new Font("Tahoma", Font.BOLD, 11));
+		label.setBounds(65, 140, 77, 14);
 		frame.getContentPane().add(label);
 		
-		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setBounds(104, 11, 46, 14);
-		frame.getContentPane().add(lblNewLabel);
-		
 		no = new JTextField();
-		no.setBounds(114, 32, 111, 20);
+		no.setBounds(135, 176, 132, 20);
 		frame.getContentPane().add(no);
 		no.setColumns(10);
 		
 		name = new JTextField();
-		name.setBounds(112, 74, 113, 20);
+		name.setBounds(135, 213, 132, 20);
 		frame.getContentPane().add(name);
 		name.setColumns(10);
 		
 		age = new JTextField();
-		age.setBounds(112, 191, 113, 20);
+		age.setBounds(135, 317, 132, 20);
 		frame.getContentPane().add(age);
 		age.setColumns(10);
 		
 		
 		
-		JButton btnCancel = new JButton("Cancel");
+		JButton btnCancel = new JButton("EXIT");
+		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
@@ -228,11 +268,28 @@ public class BloodDonor {
 		        b.frame.setVisible(true);
 			}
 		});
-		btnCancel.setBounds(316, 227, 89, 23);
+		btnCancel.setBounds(679, 371, 89, 23);
 		frame.getContentPane().add(btnCancel);
 		
 		
-	}
-	
+		
+		JLabel lblbloodIcon = new JLabel("");
+		lblbloodIcon.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("logo.png")).getImage().getScaledInstance(123, 99, Image.SCALE_SMOOTH)));
 
+			lblbloodIcon.setBounds(10, 11, 123, 99);
+			frame.getContentPane().add(lblbloodIcon);
+			
+		
+		JLabel lblbackground = new JLabel("");
+		lblbackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("background.jpg")));
+		lblbackground.setBounds(0, 0, 780, 405);
+		frame.getContentPane().add(lblbackground);
+		
+		
+		
+		
+		
+		
+		
+	}
 }

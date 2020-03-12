@@ -1,6 +1,8 @@
 package com.GUI;
 
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JTable;
@@ -8,6 +10,7 @@ import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
@@ -42,12 +45,18 @@ public class Search_Name {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 509, 333);
+		frame.setBounds(100, 100, 622, 430);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		JLabel label_1 = new JLabel("Blood Donation");
+		label_1.setForeground(new Color(107, 142, 35));
+		label_1.setFont(new Font("Nirmala UI", Font.BOLD, 21));
+		label_1.setBounds(149, 39, 167, 37);
+		frame.getContentPane().add(label_1);
 
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 56, 469, 226);
+		scrollPane.setBounds(10, 165, 586, 226);
 		frame.getContentPane().add(scrollPane);
 
 		table = new JTable();
@@ -56,15 +65,17 @@ public class Search_Name {
 		table.setBackground(Color.PINK);
 
 		JLabel lblDonorName = new JLabel("Donor Name");
-		lblDonorName.setBounds(21, 22, 76, 14);
+		lblDonorName.setFont(new Font("Tahoma", Font.BOLD, 13));
+		lblDonorName.setBounds(10, 140, 98, 14);
 		frame.getContentPane().add(lblDonorName);
 
 		name = new JTextField();
 		name.setColumns(10);
-		name.setBounds(101, 19, 182, 20);
+		name.setBounds(102, 137, 211, 20);
 		frame.getContentPane().add(name);
 
 		JButton button = new JButton("Find");
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Connection con = DBConnection.initiate_db_conn();
@@ -96,10 +107,11 @@ public class Search_Name {
 
 			}
 		});
-		button.setBounds(293, 18, 89, 23);
+		button.setBounds(346, 136, 105, 23);
 		frame.getContentPane().add(button);
 
 		btnCancel = new JButton("Cancel");
+		btnCancel.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
@@ -107,7 +119,18 @@ public class Search_Name {
 				b.frame.setVisible(true);
 			}
 		});
-		btnCancel.setBounds(390, 18, 89, 23);
+		btnCancel.setBounds(477, 137, 105, 23);
 		frame.getContentPane().add(btnCancel);
+		
+		JLabel lblbloodIcon = new JLabel("");
+		lblbloodIcon.setIcon(new ImageIcon(new javax.swing.ImageIcon(getClass().getResource("logo.png")).getImage().getScaledInstance(123, 99, Image.SCALE_SMOOTH)));
+		lblbloodIcon.setBounds(10, 11, 123, 99);
+		frame.getContentPane().add(lblbloodIcon);
+		
+		JLabel lblbackground = new JLabel("");
+		lblbackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("background.jpg")));
+		lblbackground.setBounds(0, 0, 639, 391);
+		frame.getContentPane().add(lblbackground);
+
 	}
 }

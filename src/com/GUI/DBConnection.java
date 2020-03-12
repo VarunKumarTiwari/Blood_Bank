@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DBConnection {
 	private static final String DRIVER="com.mysql.cj.jdbc.Driver";
-	private static final String URL="jdbc:mysql://localhost:3306/Blood_Bank?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT&useSSL=false";
+	private static final String URL="jdbc:mysql://localhost:3306/Blood_Bank?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT&useSSL=false&allowPublicKeyRetrieval=true";
 	private static final String USER = "root";
 //	private static final String PASSWORD = "admin";
 	private static final String PASSWORD = "root";
